@@ -1,59 +1,274 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# People API Documentation
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Overview
 
-## About Laravel
+This is a Laravel-based JSON:API compliant People API that provides mock
+data without requiring a database. The API follows RESTful principles
+and returns responses in JSON:API format.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## API Endpoints
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Base URL
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+    http://localhost:8000/api/v1
 
-## Learning Laravel
+### 1. Get All People
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+`GET /peoples`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Returns a paginated list of all people.
 
-## Laravel Sponsors
+#### Query Parameters
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+  Parameter   Type      Default   Description
+  ----------- --------- --------- ----------------------------
+  page        integer   1         Page number for pagination
+  per_page    integer   3         Number of items per page
 
-### Premium Partners
+#### Example Request
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+    curl "http://localhost:8000/api/v1/peoples?page=2&per_page=3"
 
-## Contributing
+#### Example Response (200 OK)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+``` json
+{
+  "data": [
+    {
+      "id": "4",
+      "type": "people",
+      "attributes": {
+        "name": "Emily Davis",
+        "email": "emily@example.com",
+        "phone": "444-555-6666",
+        "address": "321 Elm St, Houston, TX",
+        "created_at": "2024-01-18T09:15:00Z",
+        "updated_at": "2024-01-18T09:15:00Z"
+      }
+    },
+    {
+      "id": "5",
+      "type": "people",
+      "attributes": {
+        "name": "Michael Wilson",
+        "email": "michael@example.com",
+        "phone": "777-888-9999",
+        "address": "654 Birch Blvd, Phoenix, AZ",
+        "created_at": "2024-01-19T14:45:00Z",
+        "updated_at": "2024-01-19T14:45:00Z"
+      }
+    },
+    {
+      "id": "6",
+      "type": "people",
+      "attributes": {
+        "name": "Sarah Brown",
+        "email": "sarah@example.com",
+        "phone": "111-222-3333",
+        "address": "987 Cedar Ln, Philadelphia, PA",
+        "created_at": "2024-01-20T16:20:00Z",
+        "updated_at": "2024-01-20T16:20:00Z"
+      }
+    }
+  ],
+  "links": {
+    "first": "http://localhost:8000/api/v1/peoples?page=1",
+    "last": "http://localhost:8000/api/v1/peoples?page=4",
+    "prev": "http://localhost:8000/api/v1/peoples?page=1",
+    "next": "http://localhost:8000/api/v1/peoples?page=3"
+  },
+  "meta": {
+    "current_page": 2,
+    "from": 4,
+    "last_page": 4,
+    "path": "http://localhost:8000/api/v1/peoples",
+    "per_page": 3,
+    "to": 6,
+    "total": 10
+  }
+}
+```
 
-## Code of Conduct
+### 2. Get Single Person
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+`GET /peoples/{id}`
 
-## Security Vulnerabilities
+Returns a single person by ID.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+#### Path Parameters
 
-## License
+  Parameter   Type      Description
+  ----------- --------- -------------------
+  id          integer   Person ID (1--10)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+#### Example Request
+
+    curl "http://localhost:8000/api/v1/peoples/1"
+
+#### Example Response (200 OK)
+
+``` json
+{
+  "data": {
+    "id": "1",
+    "type": "people",
+    "attributes": {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "phone": "123-456-7890",
+      "address": "123 Main St, New York, NY",
+      "created_at": "2024-01-15T10:30:00Z",
+      "updated_at": "2024-01-15T10:30:00Z"
+    }
+  }
+}
+```
+
+#### Example Response (404 Not Found)
+
+``` json
+{
+  "errors": [
+    {
+      "status": "404",
+      "title": "Not Found",
+      "detail": "The requested person does not exist."
+    }
+  ]
+}
+```
+
+### 3. Create Person (Mock -- Returns 405)
+
+`POST /peoples`
+
+Example Response:
+
+``` json
+{ "error": "Method not supported with mock data" }
+```
+
+### 4. Update Person (Mock -- Returns 405)
+
+`PUT/PATCH /peoples/{id}`
+
+### 5. Delete Person (Mock -- Returns 405)
+
+`DELETE /peoples/{id}`
+
+## Mock Data
+
+  ID   Name              Email
+  ---- ----------------- ----------------------
+  1    John Doe          john@example.com
+  2    Jane Smith        jane@example.com
+  3    Robert Johnson    robert@example.com
+  4    Emily Davis       emily@example.com
+  5    Michael Wilson    michael@example.com
+  6    Sarah Brown       sarah@example.com
+  7    David Miller      david@example.com
+  8    Lisa Taylor       lisa@example.com
+  9    Thomas Anderson   thomas@example.com
+  10   Jennifer White    jennifer@example.com
+
+## Response Format
+
+### Success Response Structure
+
+``` json
+{
+  "data": {
+    "id": "string",
+    "type": "people",
+    "attributes": {
+      "name": "string",
+      "email": "string",
+      "phone": "string",
+      "address": "string",
+      "created_at": "ISO8601 datetime",
+      "updated_at": "ISO8601 datetime"
+    }
+  }
+}
+```
+
+### Collection Response Structure
+
+``` json
+{
+  "data": [],
+  "links": {
+    "first": "string",
+    "last": "string",
+    "prev": "string|null",
+    "next": "string|null"
+  },
+  "meta": {
+    "current_page": "integer",
+    "from": "integer|null",
+    "last_page": "integer",
+    "path": "string",
+    "per_page": "integer",
+    "to": "integer|null",
+    "total": "integer"
+  }
+}
+```
+
+### Error Response Structure
+
+``` json
+{
+  "errors": [
+    {
+      "status": "HTTP status code",
+      "title": "Error title",
+      "detail": "Error description"
+    }
+  ]
+}
+```
+
+## Installation & Setup
+
+### Prerequisites
+
+-   PHP 8.0+
+-   Composer
+-   Laravel 10+
+
+### Installation Steps
+
+    composer install
+    cp .env.example .env
+    php artisan key:generate
+    php artisan config:clear
+    php artisan route:clear
+    php artisan cache:clear
+    php artisan serve
+
+## Testing the API
+
+### Using cURL
+
+    curl "http://localhost:8000/api/v1/peoples?page=2&per_page=3"
+    curl "http://localhost:8000/api/v1/peoples/1"
+
+### Using Browser
+
+-   http://localhost:8000/api/v1/peoples\
+-   http://localhost:8000/api/v1/peoples/1
+
+## Project Structure
+
+    app/
+    ├── Http/
+    │   ├── Controllers/
+    │   │   └── PeopleController.php
+    │   └── Resources/
+    │       ├── PeopleResource.php
+    │       └── PeopleCollection.php
+    ├── Models/
+    │   └── People.php
+    routes/
+    └── api.php

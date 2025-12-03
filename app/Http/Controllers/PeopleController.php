@@ -2,47 +2,60 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\People;
+use App\Http\Resources\PeopleCollection;
+use App\Http\Resources\PeopleResource;
 use Illuminate\Http\Request;
 
 class PeopleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $perPage = $request->input('per_page', 3);
+        $page = $request->input('page', 1);
+        
+        $people = People::paginate($perPage, $page);
+        
+        return new PeopleCollection($people);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function show($id)
+    {
+        $person = People::find($id);
+        
+        if (!$person) {
+            return response()->json([
+                'errors' => [
+                    [
+                        'status' => '404',
+                        'title' => 'Not Found',
+                        'detail' => 'The requested person does not exist.'
+                    ]
+                ]
+            ], 404);
+        }
+        
+        return new PeopleResource($person);
+    }
+
     public function store(Request $request)
     {
-        //
+        return response()->json([
+            'error' => 'Method not supported with mock data'
+        ], 405);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function update(Request $request, $id)
     {
-        //
+        return response()->json([
+            'error' => 'Method not supported with mock data'
+        ], 405);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return response()->json([
+            'error' => 'Method not supported with mock data'
+        ], 405);
     }
 }
