@@ -1,0 +1,138 @@
+{
+	"info": {
+		"_postman_id": "7fe679ee-7c4c-4daa-836a-7459739baeba",
+		"name": "People API",
+		"description": "StartFragmentJSON:API compliant People API with mock.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46679815"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/peoples",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"peoples"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All People",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test 1: Check status code\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test 2: Check response time\r",
+							"pm.test(\"Response time is less than 1000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"// Test 3: Check JSON structure\r",
+							"pm.test(\"Response has data array\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.data).to.be.an('array');\r",
+							"});\r",
+							"\r",
+							"// Test 4: Check first item has correct structure\r",
+							"pm.test(\"First item has correct JSON:API structure\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    if (response.data.length > 0) {\r",
+							"        const firstItem = response.data[0];\r",
+							"        pm.expect(firstItem).to.have.property('id');\r",
+							"        pm.expect(firstItem).to.have.property('type', 'people');\r",
+							"        pm.expect(firstItem).to.have.property('attributes');\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/peoples?page=1&per_page=3",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"peoples"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "per_page",
+							"value": "3"
+						}
+					]
+				},
+				"description": "Overview\nRetrieve a paginated list of people in JSON:API format.\n\nMethod & URL\nGET {{base_url}}/api/v1/peoples?page=1&per_page=3\n\nQuery Parameters\n- page (integer, optional): Page number to retrieve. Default: 1.\n- per_page (integer, optional): Number of records per page. Default: 10. Example shown: 3.\n\nAuthentication\nThis endpoint does not require authentication in Local Development. In other environments, use the appropriate Authorization method if configured at the collection level.\n\nResponse Format\nA JSON object with:\n- data: array of resource objects with fields: id (string), type (\"people\"), attributes (object)\n  - attributes include: name, email, phone, address, created_at (RFC3339 timestamp), updated_at (RFC3339 timestamp).\n- links: pagination links (first, last, prev, next).\n- meta: pagination metadata (current_page, from, last_page, path, per_page, to, total, links).\n\nSuccess Response Example (200)\n{\n  \"data\": [\n    {\n      \"id\": \"1\",\n      \"type\": \"people\",\n      \"attributes\": {\n        \"name\": \"John Doe\",\n        \"email\": \"john@example.com\",\n        \"phone\": \"123-456-7890\",\n        \"address\": \"123 Main St, New York, NY\",\n        \"created_at\": \"2024-01-15T10:30:00.000000Z\",\n        \"updated_at\": \"2024-01-15T10:30:00.000000Z\"\n      }\n    }\n  ],\n  \"links\": { /* pagination URLs */ },\n  \"meta\": { /* pagination info */ }\n}\n\nErrors\n- 400 Bad Request: Invalid query parameter values.\n- 500 Internal Server Error: Unexpected server error.\n\nNotes\n- Variables: {{base_url}} must be defined in the active environment (e.g., Local Development).\n- Tests: This request includes tests for status 200, response time, and basic JSON:API structure.\n"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Person by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/peoples/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"peoples",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Non-existent Person",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/peoples/999",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"peoples",
+						"999"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
